@@ -105,15 +105,22 @@
 
   /* ─── NAV ─── */
   nav {
-    position: sticky;
+    position: absolute;
     top: 0;
-    z-index: 100;
+    left: 0;
+    right: 0;
+    z-index: 200;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 48px;
-    background: var(--black);
+    padding: 24px 48px;
+    background: transparent;
+  }
+  nav.scrolled {
+    position: fixed;
+    background: rgba(10,10,10,0.96);
     border-bottom: 0.5px solid var(--dark2);
+    backdrop-filter: blur(10px);
   }
   .logo {
     font-family: 'Cormorant Garamond', serif;
@@ -147,44 +154,47 @@
 
   /* ─── HERO ─── */
   #inicio {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 52% 48%;
     position: relative;
-    border-bottom: 0.5px solid var(--dark2);
-    overflow: hidden;
-    background: #0d0d0d;
-  }
-  .hero-content {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 80px 56px 80px 80px;
-    position: relative;
-    z-index: 2;
-    background: #0d0d0d;
+    border-bottom: 0.5px solid var(--dark2);
     overflow: hidden;
   }
-  .hero-image-col {
-    position: relative;
-    overflow: hidden;
-    min-height: 100vh;
-  }
-  .hero-image-col img {
+  .hero-bg-img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 30% center;
+    object-position: 65% center;
     display: block;
-    position: absolute;
-    inset: 0;
+    z-index: 0;
   }
-  .hero-image-col::before {
+  /* Gradiente: oscuro a la izquierda, transparente a la derecha */
+  #inicio::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, #0d0d0d 0%, rgba(13,13,13,0.15) 30%, rgba(13,13,13,0) 100%);
+    background: linear-gradient(
+      to right,
+      rgba(10,10,10,0.97) 0%,
+      rgba(10,10,10,0.88) 30%,
+      rgba(10,10,10,0.55) 55%,
+      rgba(10,10,10,0.10) 75%,
+      rgba(10,10,10,0.0) 100%
+    );
     z-index: 1;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 80px 80px 80px 80px;
+    max-width: 660px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .hero-eyebrow {
     font-size: 10px;
@@ -195,12 +205,11 @@
   }
   h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(44px, 4.5vw, 76px);
+    font-size: clamp(56px, 6.5vw, 96px);
     font-weight: 300;
-    line-height: 1.05;
+    line-height: 1.02;
     color: var(--cream);
-    margin-bottom: 16px;
-    max-width: 100%;
+    margin-bottom: 20px;
   }
   h1 em { font-style: italic; color: var(--gold); }
   .hero-sub {
@@ -212,31 +221,35 @@
   }
   .hero-tagline {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 17px;
+    font-size: 18px;
     font-style: italic;
     font-weight: 300;
     color: var(--mid);
-    max-width: 100%;
-    line-height: 1.65;
+    max-width: 480px;
+    line-height: 1.7;
     margin-bottom: 20px;
   }
   .hero-gold-line {
-    width: 48px; height: 0.5px;
+    width: 48px;
+    height: 0.5px;
     background: var(--gold);
-    margin-bottom: 36px;
+    margin-bottom: 40px;
   }
+  /* Texto vertical derecho */
   .hero-nav-side {
     position: absolute;
-    right: 20px;
-    bottom: 48px;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    transform-origin: center;
     z-index: 2;
     font-size: 10px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
+    color: rgba(255,255,255,0.25);
+    white-space: nowrap;
   }
+  .hero-deco { display: none; }
   .btn-gold {
     display: inline-flex;
     align-items: center;
@@ -659,16 +672,15 @@
   @media (max-width: 768px) {
     nav { padding: 16px 24px; }
     .nav-links { display: none; }
-    #inicio { grid-template-columns: 1fr; min-height: auto; }
-    .hero-content { padding: 60px 28px 48px; order: 2; }
-    .hero-image-col { order: 1; min-height: 50vw; }
+    #inicio { min-height: 100svh; }
+    .hero-content { padding: 100px 28px 80px; max-width: 100%; }
     .hero-nav-side { display: none; }
     #concepto { grid-template-columns: 1fr; }
     .concepto-left { padding: 60px 28px; }
     .concepto-right { min-height: 60vw; }
-    .concepto-stats { padding: 40px 28px; gap: 0; flex-wrap: wrap; }
-    .concepto-stats > div { min-width: 50%; border-right: none; padding: 16px 0; border-bottom: 0.5px solid var(--dark2); }
-    .concepto-stats > div:nth-child(odd) { border-right: 0.5px solid var(--dark2); }
+    .concepto-stats { padding: 40px 28px; }
+    .concepto-stats > div { border-right: none; border-bottom: 0.5px solid var(--dark2); padding: 20px 0; }
+    .concepto-stats > div:last-child { border-bottom: none; }
     section { padding: 64px 28px; }
     .menu-panel.active { grid-template-columns: 1fr; }
     .conv-grid { grid-template-columns: 1fr; }
@@ -708,7 +720,7 @@
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
 <div id="inicio">
-  <!-- Columna izquierda: texto -->
+  <img class="hero-bg-img" src="hero-bg.webp" alt="Alta cocina peruana — Pisco Lima Las Rastras">
   <div class="hero-content">
     <p class="hero-eyebrow">Gastronomía Peruana en Vanguardia</p>
     <h1>Donde Lima<br><em>susurra</em><br>al paladar.</h1>
@@ -720,11 +732,7 @@
       Reservar Mesa por WhatsApp
     </a>
   </div>
-  <!-- Columna derecha: imagen -->
-  <div class="hero-image-col">
-    <img src="hero-bg.webp" alt="Plato de alta cocina peruana en Pisco Lima Las Rastras">
-    <span class="hero-nav-side">— De Perú para el Mundo</span>
-  </div>
+  <span class="hero-nav-side">— De Perú para el Mundo</span>
 </div>
 
 <!-- STICKY BAR -->
@@ -1038,6 +1046,16 @@
     document.getElementById('tab-' + name).classList.add('active');
     el.classList.add('active');
   }
+
+  // Nav: transparente sobre el hero, sólida al scrollear
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
 
   function closeBubble() {
     document.getElementById('wa-bubble-msg').classList.remove('visible');
