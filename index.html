@@ -148,13 +148,37 @@
   /* ─── HERO ─── */
   #inicio {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 80px 80px 100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     position: relative;
     border-bottom: 0.5px solid var(--dark2);
     overflow: hidden;
+  }
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 64px 80px 80px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-image-col {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-image-col img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .hero-image-col::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #0d0d0d 0%, rgba(13,13,13,0.25) 50%, rgba(13,13,13,0) 100%);
+    z-index: 1;
   }
   .hero-eyebrow {
     font-size: 10px;
@@ -165,32 +189,47 @@
   }
   h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(52px, 7vw, 88px);
+    font-size: clamp(52px, 5.5vw, 88px);
     font-weight: 300;
     line-height: 1.05;
     color: var(--cream);
-    margin-bottom: 12px;
-    max-width: 700px;
+    margin-bottom: 16px;
+    max-width: 600px;
   }
   h1 em { font-style: italic; color: var(--gold); }
   .hero-sub {
     font-size: 11px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 40px;
+    margin-bottom: 32px;
   }
   .hero-tagline {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 19px;
+    font-size: 18px;
     font-style: italic;
     font-weight: 300;
     color: var(--mid);
-    max-width: 460px;
+    max-width: 420px;
     line-height: 1.65;
-    margin-bottom: 48px;
-    border-left: 1px solid var(--gold);
-    padding-left: 22px;
+    margin-bottom: 20px;
+  }
+  .hero-gold-line {
+    width: 48px; height: 0.5px;
+    background: var(--gold);
+    margin-bottom: 40px;
+  }
+  .hero-nav-side {
+    position: absolute;
+    right: -30px;
+    bottom: 48px;
+    z-index: 2;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
   }
   .btn-gold {
     display: inline-flex;
@@ -210,19 +249,7 @@
     transition: background 0.2s, transform 0.15s;
   }
   .btn-gold:hover { background: var(--gold2); transform: translateY(-2px); }
-  .hero-deco {
-    position: absolute;
-    right: -20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(180px, 22vw, 320px);
-    font-weight: 300;
-    color: rgba(255,255,255,0.025);
-    line-height: 1;
-    user-select: none;
-    pointer-events: none;
-  }
+  .hero-deco { display: none; }
 
   /* ─── STICKY CTA BAR ─── */
   .sticky-bar {
@@ -283,35 +310,76 @@
   .sec-title em { font-style: italic; color: var(--gold); }
 
   /* ─── CONCEPTO ─── */
+  #concepto {
+    padding: 0 !important;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 85vh;
+  }
+  .concepto-left {
+    padding: 88px 72px 88px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .concepto-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .concepto-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .concepto-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(270deg, rgba(13,13,13,0) 40%, #0d0d0d 100%);
+    z-index: 1;
+  }
   .concepto-body {
-    max-width: 660px;
+    max-width: 100%;
     font-size: 15px;
     line-height: 1.9;
-    color: var(--dim);
+    color: var(--muted);
   }
   .concepto-body p + p { margin-top: 20px; }
   .concepto-body strong { color: var(--warm); font-weight: 400; }
   .gold-line { width: 48px; height: 0.5px; background: var(--gold); margin: 28px 0; }
   .concepto-stats {
     display: flex;
-    gap: 56px;
-    margin-top: 56px;
-    padding-top: 40px;
+    gap: 0;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    justify-content: center;
+    text-align: center;
     border-top: 0.5px solid var(--dark2);
+    padding: 56px 80px;
+    background: var(--black);
   }
+  .concepto-stats > div {
+    flex: 1;
+    padding: 0 20px;
+    border-right: 0.5px solid var(--dark2);
+  }
+  .concepto-stats > div:last-child { border-right: none; }
   .stat-num {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 44px;
+    font-size: 56px;
     font-weight: 300;
     color: var(--gold);
     line-height: 1;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
   }
   .stat-lbl {
-    font-size: 10px;
-    letter-spacing: 0.18em;
+    font-size: 11px;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--ghost);
+    color: #b0a090;
   }
 
   /* ─── MENÚ ─── */
@@ -580,15 +648,22 @@
   @media (max-width: 768px) {
     nav { padding: 16px 24px; }
     .nav-links { display: none; }
-    #inicio { padding: 60px 28px 80px; }
+    #inicio { grid-template-columns: 1fr; min-height: auto; }
+    .hero-content { padding: 60px 28px 48px; order: 2; }
+    .hero-image-col { order: 1; min-height: 50vw; }
+    .hero-nav-side { display: none; }
+    #concepto { grid-template-columns: 1fr; }
+    .concepto-left { padding: 60px 28px; }
+    .concepto-right { min-height: 60vw; }
+    .concepto-stats { padding: 40px 28px; gap: 0; flex-wrap: wrap; }
+    .concepto-stats > div { min-width: 50%; border-right: none; padding: 16px 0; border-bottom: 0.5px solid var(--dark2); }
+    .concepto-stats > div:nth-child(odd) { border-right: 0.5px solid var(--dark2); }
     section { padding: 64px 28px; }
     .menu-panel.active { grid-template-columns: 1fr; }
     .conv-grid { grid-template-columns: 1fr; }
     .contact-grid { grid-template-columns: 1fr; }
     .contact-map-wrap { min-height: 300px; }
-    .concepto-stats { gap: 28px; flex-wrap: wrap; }
     .sticky-bar { padding: 12px 24px; }
-    .hero-deco { display: none; }
     footer { padding: 32px 28px; }
   }
 </style>
@@ -621,18 +696,24 @@
 </nav>
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
-<div id="inicio" style="background: linear-gradient(140deg, #0d0d0d 0%, #1a1410 55%, #0d0d0d 100%);">
-  <p class="hero-eyebrow">― Gastronomía Peruana de Vanguardia ―</p>
-  <h1>Donde Lima<br><em>susurra</em><br>al paladar.</h1>
-  <p class="hero-sub">Las Rastras · Alta Cocina · Cócteles de Autor</p>
-  <p class="hero-tagline">
-    La memoria ancestral del Perú, destilada en cada bocado.<br>Tradición que se reinventa. Sabor que no se olvida.
-  </p>
-  <a class="btn-gold" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20Pisco%20Lima!%20%F0%9F%8C%BF%0A%0AMe%20gustar%C3%ADa%20reservar%20una%20mesa.%20Les%20comparto%20mis%20datos%3A%0A%0A%E2%80%A2%20Nombre%3A%20%0A%E2%80%A2%20Fecha%20deseada%3A%20%0A%E2%80%A2%20Hora%20preferida%3A%20%0A%E2%80%A2%20N%C3%BAmero%20de%20personas%3A%20%0A%E2%80%A2%20Ocasi%C3%B3n%20especial%20(opcional)%3A%20%0A%0AQuedo%20atento%2Fa%20a%20su%20confirmaci%C3%B3n.%20%C2%A1Muchas%20gracias!" target="_blank">
-    <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    Reservar Mesa por WhatsApp
-  </a>
-  <div class="hero-deco" aria-hidden="true">PL</div>
+<div id="inicio">
+  <!-- Columna izquierda: texto -->
+  <div class="hero-content">
+    <p class="hero-eyebrow">Gastronomía Peruana en Vanguardia</p>
+    <h1>Donde Lima<br><em>susurra</em><br>al paladar.</h1>
+    <p class="hero-sub">Las Raíces &nbsp;·&nbsp; Alta Cocina &nbsp;·&nbsp; Cocteles de Autor</p>
+    <p class="hero-tagline">Una experiencia sensorial del Perú, diseñada en cada detalle.<br>Tradición que se reinventa. Sabores que se quedan.</p>
+    <div class="hero-gold-line"></div>
+    <a class="btn-gold" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20Pisco%20Lima!%20%F0%9F%8C%BF%0A%0AMe%20gustar%C3%ADa%20reservar%20una%20mesa.%20Les%20comparto%20mis%20datos%3A%0A%0A%E2%80%A2%20Nombre%3A%20%0A%E2%80%A2%20Fecha%20deseada%3A%20%0A%E2%80%A2%20Hora%20preferida%3A%20%0A%E2%80%A2%20N%C3%BAmero%20de%20personas%3A%20%0A%E2%80%A2%20Ocasi%C3%B3n%20especial%20(opcional)%3A%20%0A%0AQuedo%20atento%2Fa%20a%20su%20confirmaci%C3%B3n.%20%C2%A1Muchas%20gracias!" target="_blank">
+      <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Reservar Mesa por WhatsApp
+    </a>
+  </div>
+  <!-- Columna derecha: imagen -->
+  <div class="hero-image-col">
+    <img src="hero-bg.webp" alt="Plato de alta cocina peruana en Pisco Lima Las Rastras">
+    <span class="hero-nav-side">— De Perú para el Mundo</span>
+  </div>
 </div>
 
 <!-- STICKY BAR -->
@@ -646,29 +727,38 @@
 
 <!-- ═══════════════════ CONCEPTO ═══════════════════ -->
 <section id="concepto">
-  <p class="sec-label">— El Concepto</p>
-  <h2 class="sec-title">Una Lima <em>que late</em><br>en Las Rastras.</h2>
-  <div class="concepto-body">
-    <p>Hay sabores que viajan. Que cruzan la Cordillera cargados de historia, de mercados bulliciosos, de mar frío y tierra caliente. En <strong>Pisco Lima</strong>, esos sabores llegan hasta Las Rastras transformados en algo nuevo: más preciso, más íntimo, más sorprendente.</p>
-    <div class="gold-line"></div>
-    <p>Nuestra cocina nace del respeto absoluto por la despensa peruana —el ají amarillo, el limón sutil, la causa ancestral— pero habla un idioma contemporáneo. Cada plato es una conversación entre la tradición y la vanguardia. Cada cóctel de autor, una carta de amor al pisco: <strong>ese destilado noble que concentra el alma de los Andes en una sola copa</strong>.</p>
-    <p>El ambiente es tan deliberado como los ingredientes. <strong>Luz cálida, texturas oscuras, silencios calculados</strong>. Un espacio donde la noche se alarga porque nadie quiere que termine.</p>
+  <!-- Columna izquierda: texto -->
+  <div class="concepto-left">
+    <p class="sec-label">— El Concepto</p>
+    <h2 class="sec-title">Una Lima <em>que late</em><br>en Las Rastras.</h2>
+    <div class="concepto-body">
+      <p>Hay sabores que viajan. Que cruzan la Cordillera cargados de historia, de mercados bulliciosos, de mar frío y tierra caliente. En <strong>Pisco Lima</strong>, esos sabores llegan hasta Las Rastras transformados en algo nuevo: más preciso, más íntimo, más sorprendente.</p>
+      <div class="gold-line"></div>
+      <p>Nuestra cocina nace del respeto absoluto por la despensa peruana —el ají amarillo, el limón sutil, la causa ancestral— pero habla un idioma contemporáneo. Cada plato es una conversación entre la tradición y la vanguardia. Cada cóctel de autor, una carta de amor al pisco: <strong>ese destilado noble que concentra el alma de los Andes en una sola copa</strong>.</p>
+      <p>El ambiente es tan deliberado como los ingredientes. <strong>Luz cálida, texturas oscuras, silencios calculados</strong>. Un espacio donde la noche se alarga porque nadie quiere que termine.</p>
+    </div>
   </div>
-  <div class="concepto-stats">
-    <div>
-      <div class="stat-num">14+</div>
-      <div class="stat-lbl">Cócteles de autor</div>
-    </div>
-    <div>
-      <div class="stat-num">100%</div>
-      <div class="stat-lbl">Ingredientes seleccionados</div>
-    </div>
-    <div>
-      <div class="stat-num">1</div>
-      <div class="stat-lbl">Experiencia única</div>
-    </div>
+  <!-- Columna derecha: imagen -->
+  <div class="concepto-right">
+    <img src="concepto-bg.png" alt="Plato de alta cocina peruana — Pisco Lima Las Rastras">
   </div>
 </section>
+
+<!-- STATS separadas del concepto -->
+<div class="concepto-stats">
+  <div>
+    <div class="stat-num">14+</div>
+    <div class="stat-lbl">Cócteles de autor</div>
+  </div>
+  <div>
+    <div class="stat-num">100%</div>
+    <div class="stat-lbl">Ingredientes seleccionados</div>
+  </div>
+  <div>
+    <div class="stat-num">1</div>
+    <div class="stat-lbl">Experiencia única</div>
+  </div>
+</div>
 
 <!-- ═══════════════════ LA CARTA ═══════════════════ -->
 <section id="carta">
