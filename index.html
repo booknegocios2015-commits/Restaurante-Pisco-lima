@@ -7,684 +7,492 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-  :root {
-    --black:   #0d0d0d;
-    --coal:    #111010;
-    --dark1:   #1a1410;
-    --dark2:   #2a2520;
-    --dark3:   #3a3020;
-    --gold:    #c9a96e;
-    --gold2:   #e0c08a;
-    --cream:   #f0e8d8;
-    --warm:    #e8dcc8;
-    --mid:     #c0b09a;
-    --muted:   #8a7d6a;
-    --dim:     #6a6050;
-    --faint:   #5a5040;
-    --ghost:   #3a3020;
-    --wa:      #25D366;
-  }
+:root {
+  --black:  #0a0a0a;
+  --coal:   #111010;
+  --dark1:  #1a1410;
+  --dark2:  #2a2520;
+  --gold:   #c9a96e;
+  --gold2:  #e0c08a;
+  --cream:  #f0e8d8;
+  --warm:   #e8dcc8;
+  --mid:    #c0b09a;
+  --muted:  #8a7d6a;
+  --dim:    #6a6050;
+  --faint:  #5a5040;
+  --ghost:  #3a3020;
+  --wa:     #25D366;
+}
 
-  html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--warm);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
 
-  body {
-    background: var(--black);
-    color: var(--warm);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
+/* ── WA BUBBLE ── */
+#wa-bubble {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: none;
+}
+#wa-bubble-msg {
+  background: #fff;
+  color: #1a1a1a;
+  padding: 12px 16px;
+  border-radius: 12px 12px 0 12px;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  max-width: 230px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s, transform 0.4s;
+  pointer-events: none;
+  position: relative;
+}
+#wa-bubble-msg.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+#wa-bubble-close {
+  position: absolute; top: -8px; right: -8px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--dim); color: #fff;
+  font-size: 11px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; pointer-events: auto; line-height: 1;
+}
+#wa-bubble-btn {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--wa);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; pointer-events: auto;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+  flex-shrink: 0; text-decoration: none;
+}
+#wa-bubble-btn svg { width: 28px; height: 28px; fill: #fff; }
 
-  /* ─── FLOATING WA BUBBLE ─── */
-  #wa-bubble {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    z-index: 9999;
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
-    pointer-events: none;
-  }
-  #wa-bubble-msg {
-    background: #fff;
-    color: #1a1a1a;
-    padding: 12px 16px;
-    border-radius: 12px 12px 0 12px;
-    font-size: 13px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 400;
-    line-height: 1.5;
-    max-width: 230px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    pointer-events: none;
-  }
-  #wa-bubble-msg.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-  #wa-bubble-btn {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--wa);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    pointer-events: auto;
-    box-shadow: 0 4px 16px rgba(37,211,102,0.3);
-    flex-shrink: 0;
-    text-decoration: none;
-  }
-  #wa-bubble-btn svg { width: 28px; height: 28px; fill: #fff; }
-  #wa-bubble-close {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--dim);
-    color: #fff;
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    pointer-events: auto;
-    line-height: 1;
-  }
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 48px;
+  background: transparent;
+  transition: background 0.4s, backdrop-filter 0.4s, padding 0.3s;
+}
+nav.scrolled {
+  background: rgba(10,10,10,0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid var(--dark2);
+  padding: 16px 48px;
+}
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 600;
+  letter-spacing: 0.1em; color: var(--warm);
+  text-decoration: none;
+}
+.logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted);
+  text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-loc { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint); }
 
-  /* ─── NAV ─── */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 48px;
-    background: var(--black);
-    border-bottom: 0.5px solid var(--dark2);
-  }
-  .logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: var(--warm);
-    text-decoration: none;
-  }
-  .logo span { color: var(--gold); }
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-  }
-  .nav-links a {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--gold); }
-  .nav-loc {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--faint);
-  }
+/* ── HERO — full bleed ── */
+#inicio {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-bottom: 0.5px solid var(--dark2);
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 60% center;
+  display: block;
+  z-index: 0;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(10,10,10,0.96) 0%,
+    rgba(10,10,10,0.85) 35%,
+    rgba(10,10,10,0.45) 60%,
+    rgba(10,10,10,0.05) 85%,
+    rgba(10,10,10,0.0) 100%
+  );
+  z-index: 1;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 140px 80px 80px;
+  max-width: 640px;
+}
+.hero-eyebrow {
+  font-size: 10px; letter-spacing: 0.35em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 24px;
+}
+.hero-h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(60px, 7vw, 100px);
+  font-weight: 300; line-height: 1.0;
+  color: var(--cream); margin-bottom: 20px;
+}
+.hero-h1 em { font-style: italic; color: var(--gold); }
+.hero-sub {
+  font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 28px;
+}
+.hero-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-style: italic; font-weight: 300;
+  color: var(--mid); line-height: 1.7; margin-bottom: 20px;
+}
+.hero-line { width: 48px; height: 0.5px; background: var(--gold); margin-bottom: 40px; }
+.hero-side-text {
+  position: absolute;
+  right: 40px; top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  z-index: 2;
+  font-size: 10px; letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.22);
+  white-space: nowrap;
+}
 
-  /* ─── HERO ─── */
-  #inicio {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    border-bottom: 0.5px solid var(--dark2);
-    overflow: hidden;
-  }
-  .hero-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 80px 64px 80px 80px;
-    position: relative;
-    z-index: 2;
-  }
-  .hero-image-col {
-    position: relative;
-    overflow: hidden;
-  }
-  .hero-image-col img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-  }
-  .hero-image-col::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, #0d0d0d 0%, rgba(13,13,13,0.25) 50%, rgba(13,13,13,0) 100%);
-    z-index: 1;
-  }
-  .hero-eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 28px;
-  }
-  h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(52px, 5.5vw, 88px);
-    font-weight: 300;
-    line-height: 1.05;
-    color: var(--cream);
-    margin-bottom: 16px;
-    max-width: 600px;
-  }
-  h1 em { font-style: italic; color: var(--gold); }
-  .hero-sub {
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 32px;
-  }
-  .hero-tagline {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-style: italic;
-    font-weight: 300;
-    color: var(--mid);
-    max-width: 420px;
-    line-height: 1.65;
-    margin-bottom: 20px;
-  }
-  .hero-gold-line {
-    width: 48px; height: 0.5px;
-    background: var(--gold);
-    margin-bottom: 40px;
-  }
-  .hero-nav-side {
-    position: absolute;
-    right: -30px;
-    bottom: 48px;
-    z-index: 2;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-  }
-  .btn-gold {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--gold);
-    color: var(--black);
-    padding: 16px 32px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-    border: none;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .btn-gold:hover { background: var(--gold2); transform: translateY(-2px); }
-  .hero-deco { display: none; }
+/* ── STICKY BAR ── */
+.sticky-bar {
+  position: sticky; bottom: 0;
+  background: var(--dark1);
+  border-top: 0.5px solid var(--gold);
+  padding: 13px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 99;
+}
+.sticky-bar-text { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
 
-  /* ─── STICKY CTA BAR ─── */
-  .sticky-bar {
-    position: sticky;
-    bottom: 0;
-    background: var(--dark1);
-    border-top: 0.5px solid var(--gold);
-    padding: 13px 48px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 99;
-  }
-  .sticky-bar-text {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--faint);
-  }
-  .btn-wa-small {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--wa);
-    color: #fff;
-    padding: 10px 22px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: 3px;
-    transition: background 0.2s;
-  }
-  .btn-wa-small:hover { background: #1ebe5d; }
+/* ── BUTTONS ── */
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--gold); color: var(--black);
+  padding: 16px 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-gold:hover { background: var(--gold2); transform: translateY(-2px); }
+.btn-wa-small {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--wa); color: #fff;
+  padding: 10px 22px; border-radius: 3px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  text-decoration: none; transition: background 0.2s;
+}
+.btn-wa-small:hover { background: #1ebe5d; }
+.btn-wa-outline {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: transparent; border: 0.5px solid var(--gold);
+  color: var(--gold); padding: 14px 28px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer;
+  transition: all 0.2s; width: 100%;
+}
+.btn-wa-outline:hover {
+  background: var(--gold); color: var(--black);
+  box-shadow: 0 0 20px rgba(201,169,110,0.25);
+}
+.wa-icon { width: 16px; height: 16px; fill: currentColor; vertical-align: middle; flex-shrink: 0; }
 
-  /* ─── SECCIONES GENÉRICAS ─── */
-  section {
-    padding: 88px 80px;
-    border-bottom: 0.5px solid #1e1c18;
-  }
-  .sec-label {
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 10px;
-  }
-  .sec-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(32px, 4vw, 48px);
-    font-weight: 300;
-    color: var(--cream);
-    margin-bottom: 40px;
-    line-height: 1.15;
-  }
-  .sec-title em { font-style: italic; color: var(--gold); }
+/* ── SECCIONES ── */
+section {
+  padding: 88px 80px;
+  border-bottom: 0.5px solid #1e1c18;
+}
+.sec-label {
+  font-size: 10px; letter-spacing: 0.35em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+}
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 48px); font-weight: 300;
+  color: var(--cream); margin-bottom: 40px; line-height: 1.15;
+}
+.sec-title em { font-style: italic; color: var(--gold); }
 
-  /* ─── CONCEPTO ─── */
-  #concepto {
-    padding: 0 !important;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 85vh;
-  }
-  .concepto-left {
-    padding: 88px 72px 88px 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .concepto-right {
-    position: relative;
-    overflow: hidden;
-  }
-  .concepto-right img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-  }
-  .concepto-right::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(270deg, rgba(13,13,13,0) 40%, #0d0d0d 100%);
-    z-index: 1;
-  }
-  .concepto-body {
-    max-width: 100%;
-    font-size: 15px;
-    line-height: 1.9;
-    color: var(--muted);
-  }
-  .concepto-body p + p { margin-top: 20px; }
-  .concepto-body strong { color: var(--warm); font-weight: 400; }
-  .gold-line { width: 48px; height: 0.5px; background: var(--gold); margin: 28px 0; }
-  .concepto-stats {
-    display: flex;
-    gap: 0;
-    margin-top: 0;
-    padding-top: 0;
-    border-top: none;
-    justify-content: center;
-    text-align: center;
-    border-top: 0.5px solid var(--dark2);
-    padding: 56px 80px;
-    background: var(--black);
-  }
-  .concepto-stats > div {
-    flex: 1;
-    padding: 0 20px;
-    border-right: 0.5px solid var(--dark2);
-  }
-  .concepto-stats > div:last-child { border-right: none; }
-  .stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 56px;
-    font-weight: 300;
-    color: var(--gold);
-    line-height: 1;
-    margin-bottom: 10px;
-  }
-  .stat-lbl {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #b0a090;
-  }
+/* ── CONCEPTO — full bleed ── */
+#concepto {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 !important;
+  border-bottom: 0.5px solid #1e1c18;
+}
+.concepto-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 65% center;
+  display: block;
+  z-index: 0;
+}
+.concepto-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(10,10,10,0.97) 0%,
+    rgba(10,10,10,0.88) 40%,
+    rgba(10,10,10,0.50) 65%,
+    rgba(10,10,10,0.0) 100%
+  );
+  z-index: 1;
+}
+.concepto-content {
+  position: relative;
+  z-index: 2;
+  padding: 88px 80px;
+  max-width: 600px;
+}
+.concepto-body { font-size: 15px; line-height: 1.9; color: var(--muted); }
+.concepto-body p + p { margin-top: 20px; }
+.concepto-body strong { color: var(--warm); font-weight: 400; }
+.gold-line { width: 48px; height: 0.5px; background: var(--gold); margin: 28px 0; }
 
-  /* ─── MENÚ ─── */
-  .menu-tabs {
-    display: flex;
-    border-bottom: 0.5px solid var(--dark2);
-    margin-bottom: 40px;
-    gap: 0;
-  }
-  .tab {
-    padding: 14px 28px;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--faint);
-    cursor: pointer;
-    border-bottom: 1px solid transparent;
-    margin-bottom: -0.5px;
-    transition: all 0.2s;
-    user-select: none;
-  }
-  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
-  .tab:hover:not(.active) { color: var(--muted); }
-  .menu-panel { display: none; }
-  .menu-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-  .dish {
-    padding: 28px 32px;
-    background: var(--coal);
-    border: 0.5px solid #1e1c18;
-    transition: border-color 0.2s;
-  }
-  .dish:hover { border-color: var(--ghost); }
-  .dish-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 400;
-    color: var(--warm);
-    margin-bottom: 8px;
-    line-height: 1.2;
-  }
-  .dish-name em { font-style: italic; color: var(--gold); }
-  .dish-desc {
-    font-size: 12px;
-    color: var(--dim);
-    line-height: 1.75;
-    font-weight: 300;
-  }
-  .dish-footer {
-    margin-top: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .dish-badge {
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    border: 0.5px solid rgba(201,169,110,0.2);
-    padding: 4px 10px;
-  }
+/* ── STATS ── */
+.concepto-stats {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  border-top: 0.5px solid var(--dark2);
+  padding: 56px 80px;
+  background: var(--black);
+  border-bottom: 0.5px solid #1e1c18;
+}
+.concepto-stats > div {
+  flex: 1; padding: 0 20px;
+  border-right: 0.5px solid var(--dark2);
+}
+.concepto-stats > div:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 60px; font-weight: 300;
+  color: var(--gold); line-height: 1; margin-bottom: 12px;
+}
+.stat-lbl {
+  font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: #b0a090;
+}
 
-  /* ─── CONVERSIÓN ─── */
-  .conv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-  .conv-block {
-    padding: 48px 44px;
-    background: var(--coal);
-    border: 0.5px solid #1e1c18;
-  }
-  .conv-icon { font-size: 32px; color: var(--gold); opacity: 0.6; margin-bottom: 24px; }
-  .conv-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
-    font-weight: 300;
-    color: var(--cream);
-    margin-bottom: 16px;
-    line-height: 1.15;
-  }
-  .conv-title em { font-style: italic; color: var(--gold); }
-  .conv-body {
-    font-size: 13px;
-    color: var(--dim);
-    line-height: 1.8;
-    margin-bottom: 32px;
-    font-weight: 300;
-  }
-  .conv-body strong { color: var(--muted); font-weight: 400; }
-  .btn-wa-outline {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background: transparent;
-    border: 0.5px solid var(--gold);
-    color: var(--gold);
-    padding: 14px 28px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    width: 100%;
-  }
-  .btn-wa-outline:hover { background: var(--gold); color: var(--black); }
+/* ── MENÚ ── */
+.menu-tabs {
+  display: flex;
+  border-bottom: 0.5px solid var(--dark2);
+  margin-bottom: 40px;
+}
+.tab {
+  padding: 14px 28px; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--faint); cursor: pointer;
+  border-bottom: 1px solid transparent;
+  margin-bottom: -0.5px; transition: all 0.2s; user-select: none;
+}
+.tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab:hover:not(.active) { color: var(--muted); }
+.menu-panel { display: none; }
+.menu-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.dish {
+  padding: 28px 32px; background: var(--coal);
+  border: 0.5px solid #1e1c18; border-radius: 4px;
+  transition: border-color 0.3s, transform 0.25s, box-shadow 0.3s;
+}
+.dish:hover {
+  border-color: rgba(201,169,110,0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.dish-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 400;
+  color: var(--warm); margin-bottom: 8px; line-height: 1.2;
+}
+.dish-name em { font-style: italic; color: var(--gold); }
+.dish-desc { font-size: 12px; color: var(--dim); line-height: 1.75; }
+.dish-footer { margin-top: 14px; }
+.dish-badge {
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); border: 0.5px solid rgba(201,169,110,0.2);
+  padding: 4px 10px;
+}
 
-  /* ─── FOOTER ─── */
-  footer {
-    padding: 40px 80px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
-    border-top: 0.5px solid #1a1a18;
-  }
-  .footer-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    color: var(--ghost);
-    letter-spacing: 0.1em;
-  }
-  .footer-copy { font-size: 10px; color: var(--ghost); letter-spacing: 0.1em; }
-  .footer-loc { font-size: 11px; color: var(--faint); }
+/* ── CONVERSIÓN ── */
+.conv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.conv-block {
+  padding: 48px 44px; background: var(--coal);
+  border: 0.5px solid #1e1c18;
+}
+.conv-icon { color: var(--gold); opacity: 0.6; margin-bottom: 24px; }
+.conv-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 300; color: var(--cream);
+  margin-bottom: 16px; line-height: 1.15;
+}
+.conv-title em { font-style: italic; color: var(--gold); }
+.conv-body {
+  font-size: 13px; color: var(--dim);
+  line-height: 1.8; margin-bottom: 32px;
+}
+.conv-body strong { color: var(--muted); font-weight: 400; }
 
-  /* ─── WA ICON SVG ─── */
-  .wa-icon { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; }
+/* ── CONTACTO ── */
+.contact-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 2px; align-items: stretch; }
+.contact-info {
+  padding: 48px 44px; background: var(--coal);
+  border: 0.5px solid #1e1c18;
+  display: flex; flex-direction: column; gap: 32px;
+}
+.contact-item { display: flex; flex-direction: column; gap: 6px; }
+.contact-item-label {
+  font-size: 9px; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--faint);
+}
+.contact-item-value { font-size: 14px; color: var(--warm); line-height: 1.5; font-weight: 300; }
+.contact-item-value a { color: var(--warm); text-decoration: none; transition: color 0.2s; }
+.contact-item-value a:hover { color: var(--gold); }
+.contact-item-value strong { color: var(--gold); font-weight: 400; }
+.contact-hours { display: flex; flex-direction: column; gap: 0; }
+.contact-hours-row {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--dim);
+  padding: 5px 0; border-bottom: 0.5px solid #1e1c18;
+}
+.contact-hours-row:last-child { border-bottom: none; }
+.contact-hours-row span:last-child { color: var(--muted); }
+.contact-map-wrap {
+  position: relative; min-height: 420px;
+  background: var(--coal); border: 0.5px solid #1e1c18; overflow: hidden;
+}
+.map-visual { position: relative; width: 100%; height: 100%; min-height: 420px; display: flex; align-items: stretch; }
+.map-bg-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.map-open-btn {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) translateY(28px);
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(13,13,13,0.88); border: 0.5px solid var(--gold);
+  color: var(--gold); padding: 11px 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.16em;
+  text-transform: uppercase; text-decoration: none;
+  backdrop-filter: blur(8px); transition: background 0.2s, color 0.2s; white-space: nowrap;
+}
+.map-open-btn:hover { background: var(--gold); color: var(--black); }
+.map-overlay-badge {
+  position: absolute; bottom: 16px; left: 16px;
+  background: rgba(13,13,13,0.92); border: 0.5px solid var(--gold);
+  padding: 8px 14px; backdrop-filter: blur(8px);
+  display: flex; align-items: center; gap: 8px;
+}
+.map-overlay-badge-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(201,169,110,0.6);
+}
+.map-overlay-badge-text { font-size: 10px; letter-spacing: 0.1em; color: var(--warm); text-transform: uppercase; }
+.contact-social { display: flex; gap: 12px; margin-top: 4px; }
+.social-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  color: var(--dim); font-size: 11px; letter-spacing: 0.1em;
+  text-decoration: none; transition: color 0.2s;
+  border: 0.5px solid #2a2520; padding: 7px 14px;
+}
+.social-link:hover { color: var(--gold); border-color: var(--gold); }
 
-  /* ─── CONTACTO & MAPA ─── */
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.6fr;
-    gap: 2px;
-    align-items: stretch;
-  }
-  .contact-info {
-    padding: 48px 44px;
-    background: var(--coal);
-    border: 0.5px solid #1e1c18;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-  }
-  .contact-item { display: flex; flex-direction: column; gap: 6px; }
-  .contact-item-label {
-    font-size: 9px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--faint);
-  }
-  .contact-item-value {
-    font-size: 14px;
-    color: var(--warm);
-    line-height: 1.5;
-    font-weight: 300;
-  }
-  .contact-item-value a {
-    color: var(--warm);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .contact-item-value a:hover { color: var(--gold); }
-  .contact-item-value strong { color: var(--gold); font-weight: 400; }
-  .contact-hours { display: flex; flex-direction: column; gap: 4px; }
-  .contact-hours-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--dim);
-    padding: 5px 0;
-    border-bottom: 0.5px solid #1e1c18;
-  }
-  .contact-hours-row:last-child { border-bottom: none; }
-  .contact-hours-row span:last-child { color: var(--muted); }
-  .contact-map-wrap {
-    position: relative;
-    min-height: 420px;
-    background: var(--coal);
-    border: 0.5px solid #1e1c18;
-    overflow: hidden;
-  }
-  .map-visual {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    min-height: 420px;
-    display: flex;
-    align-items: stretch;
-  }
-  .map-bg-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-  .map-open-btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) translateY(28px);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(13,13,13,0.88);
-    border: 0.5px solid var(--gold);
-    color: var(--gold);
-    padding: 11px 22px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    text-decoration: none;
-    backdrop-filter: blur(8px);
-    transition: background 0.2s, color 0.2s;
-    white-space: nowrap;
-  }
-  .map-open-btn:hover {
-    background: var(--gold);
-    color: var(--black);
-  }
-  .map-overlay-badge {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    background: rgba(13,13,13,0.92);
-    border: 0.5px solid var(--gold);
-    padding: 8px 14px;
-    backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .map-overlay-badge-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--gold);
-    flex-shrink: 0;
-    box-shadow: 0 0 6px rgba(201,169,110,0.6);
-  }
-  .map-overlay-badge-text {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: var(--warm);
-    text-transform: uppercase;
-  }
-  .contact-social { display: flex; gap: 12px; margin-top: 4px; }
-  .social-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    color: var(--dim);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-decoration: none;
-    transition: color 0.2s;
-    border: 0.5px solid #2a2520;
-    padding: 7px 14px;
-  }
-  .social-link:hover { color: var(--gold); border-color: var(--gold); }
+/* ── FOOTER ── */
+footer {
+  padding: 40px 80px; display: flex;
+  justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--ghost); letter-spacing: 0.1em; }
+.footer-copy { font-size: 10px; color: var(--ghost); letter-spacing: 0.1em; }
+.footer-loc { font-size: 11px; color: var(--faint); }
 
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 768px) {
-    nav { padding: 16px 24px; }
-    .nav-links { display: none; }
-    #inicio { grid-template-columns: 1fr; min-height: auto; }
-    .hero-content { padding: 60px 28px 48px; order: 2; }
-    .hero-image-col { order: 1; min-height: 50vw; }
-    .hero-nav-side { display: none; }
-    #concepto { grid-template-columns: 1fr; }
-    .concepto-left { padding: 60px 28px; }
-    .concepto-right { min-height: 60vw; }
-    .concepto-stats { padding: 40px 28px; gap: 0; flex-wrap: wrap; }
-    .concepto-stats > div { min-width: 50%; border-right: none; padding: 16px 0; border-bottom: 0.5px solid var(--dark2); }
-    .concepto-stats > div:nth-child(odd) { border-right: 0.5px solid var(--dark2); }
-    section { padding: 64px 28px; }
-    .menu-panel.active { grid-template-columns: 1fr; }
-    .conv-grid { grid-template-columns: 1fr; }
-    .contact-grid { grid-template-columns: 1fr; }
-    .contact-map-wrap { min-height: 300px; }
-    .sticky-bar { padding: 12px 24px; }
-    footer { padding: 32px 28px; }
-  }
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  nav.scrolled { padding: 14px 24px; }
+  .nav-links { display: none; }
+  .hero-content { padding: 110px 28px 72px; max-width: 100%; }
+  .hero-side-text { display: none; }
+  .hero-h1 { font-size: clamp(48px, 12vw, 72px); }
+  #concepto { min-height: auto; }
+  .concepto-content { padding: 64px 28px; max-width: 100%; }
+  .concepto-stats { padding: 40px 28px; flex-direction: column; gap: 0; }
+  .concepto-stats > div { border-right: none; border-bottom: 0.5px solid var(--dark2); padding: 20px 0; }
+  .concepto-stats > div:last-child { border-bottom: none; }
+  section { padding: 64px 28px; }
+  .menu-panel.active { grid-template-columns: 1fr; }
+  .conv-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-map-wrap { min-height: 300px; }
+  .sticky-bar { padding: 12px 24px; }
+  footer { padding: 32px 28px; }
+}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════ FLOATING WA BUBBLE ═══════════════════ -->
+<!-- WA BUBBLE -->
 <div id="wa-bubble">
   <div style="position:relative;">
     <div id="wa-bubble-msg">
       ¿Antojo de un Pisco Sour Catedral? Tu mesa está a un mensaje de distancia.
-      <div id="wa-bubble-close" onclick="closeBubble()">✕</div>
+      <div id="wa-bubble-close" onclick="document.getElementById('wa-bubble-msg').classList.remove('visible')">✕</div>
     </div>
   </div>
-  <a id="wa-bubble-btn" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20Pisco%20Lima!%20%F0%9F%8C%BF%0A%0AMe%20gustar%C3%ADa%20reservar%20una%20mesa.%20Les%20comparto%20mis%20datos%3A%0A%0A%E2%80%A2%20Nombre%3A%20%0A%E2%80%A2%20Fecha%20deseada%3A%20%0A%E2%80%A2%20Hora%20preferida%3A%20%0A%E2%80%A2%20N%C3%BAmero%20de%20personas%3A%20%0A%E2%80%A2%20Ocasi%C3%B3n%20especial%20(opcional)%3A%20%0A%0AQuedo%20atento%2Fa%20a%20su%20confirmaci%C3%B3n.%20%C2%A1Muchas%20gracias!" target="_blank" aria-label="Contactar por WhatsApp">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <a id="wa-bubble-btn" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20Pisco%20Lima!%20Quiero%20reservar%20una%20mesa." target="_blank" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
 </div>
 
-<!-- ═══════════════════ NAV ═══════════════════ -->
-<nav>
+<!-- NAV -->
+<nav id="main-nav">
   <a href="#inicio" class="logo">PISCO <span>LIMA</span></a>
   <ul class="nav-links">
     <li><a href="#concepto">Concepto</a></li>
@@ -692,43 +500,41 @@
     <li><a href="#reservas">Reservas</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
-  <span class="nav-loc">Las Rastras · Maule</span>
+  <span class="nav-loc">— De Perú para el Mundo</span>
 </nav>
 
-<!-- ═══════════════════ HERO ═══════════════════ -->
+<!-- HERO -->
 <div id="inicio">
-  <!-- Columna izquierda: texto -->
+  <img class="hero-bg" src="hero-bg.png" alt="Alta cocina peruana Pisco Lima Las Rastras">
+  <div class="hero-overlay"></div>
   <div class="hero-content">
     <p class="hero-eyebrow">Gastronomía Peruana en Vanguardia</p>
-    <h1>Donde Lima<br><em>susurra</em><br>al paladar.</h1>
+    <h1 class="hero-h1">Donde Lima<br><em>susurra</em><br>al paladar.</h1>
     <p class="hero-sub">Las Raíces &nbsp;·&nbsp; Alta Cocina &nbsp;·&nbsp; Cocteles de Autor</p>
     <p class="hero-tagline">Una experiencia sensorial del Perú, diseñada en cada detalle.<br>Tradición que se reinventa. Sabores que se quedan.</p>
-    <div class="hero-gold-line"></div>
-    <a class="btn-gold" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20Pisco%20Lima!%20%F0%9F%8C%BF%0A%0AMe%20gustar%C3%ADa%20reservar%20una%20mesa.%20Les%20comparto%20mis%20datos%3A%0A%0A%E2%80%A2%20Nombre%3A%20%0A%E2%80%A2%20Fecha%20deseada%3A%20%0A%E2%80%A2%20Hora%20preferida%3A%20%0A%E2%80%A2%20N%C3%BAmero%20de%20personas%3A%20%0A%E2%80%A2%20Ocasi%C3%B3n%20especial%20(opcional)%3A%20%0A%0AQuedo%20atento%2Fa%20a%20su%20confirmaci%C3%B3n.%20%C2%A1Muchas%20gracias!" target="_blank">
+    <div class="hero-line"></div>
+    <a class="btn-gold" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20Pisco%20Lima!%20%F0%9F%8C%BF%0A%0AMe%20gustar%C3%ADa%20reservar%20una%20mesa.%20Les%20comparto%20mis%20datos%3A%0A%0A%E2%80%A2%20Nombre%3A%20%0A%E2%80%A2%20Fecha%20deseada%3A%20%0A%E2%80%A2%20Hora%20preferida%3A%20%0A%E2%80%A2%20N%C3%BAmero%20de%20personas%3A%20%0A%E2%80%A2%20Ocasi%C3%B3n%20especial%20(opcional)%3A%20%0A%0AQuedo%20atento%2Fa." target="_blank">
       <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       Reservar Mesa por WhatsApp
     </a>
   </div>
-  <!-- Columna derecha: imagen -->
-  <div class="hero-image-col">
-    <img src="hero-bg.webp" alt="Plato de alta cocina peruana en Pisco Lima Las Rastras">
-    <span class="hero-nav-side">— De Perú para el Mundo</span>
-  </div>
+  <span class="hero-side-text">Las Rastras · Talca · Chile</span>
 </div>
 
 <!-- STICKY BAR -->
 <div class="sticky-bar">
   <span class="sticky-bar-text">¿Listo para vivir la experiencia?</span>
-  <a class="btn-wa-small" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20Pisco%20Lima!%20Quiero%20reservar%20una%20mesa." target="_blank">
+  <a class="btn-wa-small" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20quiero%20reservar!" target="_blank">
     <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     Reservar ahora
   </a>
 </div>
 
-<!-- ═══════════════════ CONCEPTO ═══════════════════ -->
+<!-- CONCEPTO -->
 <section id="concepto">
-  <!-- Columna izquierda: texto -->
-  <div class="concepto-left">
+  <img class="concepto-bg" src="concepto-bg.png" alt="Plato de alta cocina peruana Pisco Lima">
+  <div class="concepto-overlay"></div>
+  <div class="concepto-content">
     <p class="sec-label">— El Concepto</p>
     <h2 class="sec-title">Una Lima <em>que late</em><br>en Las Rastras.</h2>
     <div class="concepto-body">
@@ -738,133 +544,63 @@
       <p>El ambiente es tan deliberado como los ingredientes. <strong>Luz cálida, texturas oscuras, silencios calculados</strong>. Un espacio donde la noche se alarga porque nadie quiere que termine.</p>
     </div>
   </div>
-  <!-- Columna derecha: imagen -->
-  <div class="concepto-right">
-    <img src="concepto-bg.png" alt="Plato de alta cocina peruana — Pisco Lima Las Rastras">
-  </div>
 </section>
 
-<!-- STATS separadas del concepto -->
+<!-- STATS -->
 <div class="concepto-stats">
-  <div>
-    <div class="stat-num">14+</div>
-    <div class="stat-lbl">Cócteles de autor</div>
-  </div>
-  <div>
-    <div class="stat-num">100%</div>
-    <div class="stat-lbl">Ingredientes seleccionados</div>
-  </div>
-  <div>
-    <div class="stat-num">1</div>
-    <div class="stat-lbl">Experiencia única</div>
-  </div>
+  <div><div class="stat-num">14+</div><div class="stat-lbl">Cócteles de autor</div></div>
+  <div><div class="stat-num">100%</div><div class="stat-lbl">Ingredientes seleccionados</div></div>
+  <div><div class="stat-num">1</div><div class="stat-lbl">Experiencia única</div></div>
 </div>
 
-<!-- ═══════════════════ LA CARTA ═══════════════════ -->
+<!-- LA CARTA -->
 <section id="carta">
   <p class="sec-label">— La Carta</p>
   <h2 class="sec-title">Sabores que <em>cuentan</em><br>una historia.</h2>
-
   <div class="menu-tabs">
-    <div class="tab active" onclick="showTab('entradas', this)">Entradas</div>
-    <div class="tab" onclick="showTab('fondos', this)">Fondos</div>
-    <div class="tab" onclick="showTab('cocteleria', this)">Coctelería de Autor</div>
+    <div class="tab active" onclick="showTab('entradas',this)">Entradas</div>
+    <div class="tab" onclick="showTab('fondos',this)">Fondos</div>
+    <div class="tab" onclick="showTab('cocteleria',this)">Coctelería de Autor</div>
   </div>
-
   <div id="tab-entradas" class="menu-panel active">
-    <div class="dish">
-      <div class="dish-name">Ceviche <em>Carretillero</em></div>
-      <p class="dish-desc">Corvina de primera selección marinada en leche de tigre con ají limo fresco, cebolla morada en juliana y choclo cancha tostado. Cítrico, vibrante, profundo.</p>
-      <div class="dish-footer"><span class="dish-badge">Firma del Chef</span></div>
-    </div>
-    <div class="dish">
-      <div class="dish-name">Ceviche <em>Nikkei</em></div>
-      <p class="dish-desc">Fusión íntima entre el Pacífico y el Japón. Salmón premium, ponzu de maracuyá, emulsión de aguacate cremoso y crujiente de wonton negro.</p>
-      <div class="dish-footer"><span class="dish-badge">Fusión</span></div>
-    </div>
-    <div class="dish">
-      <div class="dish-name"><em>Causa</em> Limeña Premium</div>
-      <p class="dish-desc">Causa de papa amarilla infusionada con ají amarillo, coronada con láminas de langostino al ajillo, mayonesa de aceituna negra y caviar de trucha andina.</p>
-      <div class="dish-footer"><span class="dish-badge">Alta Cocina</span></div>
-    </div>
-    <div class="dish">
-      <div class="dish-name">Tiradito <em>Criollo</em></div>
-      <p class="dish-desc">Corte en láminas delicadas de lenguado salvaje, bañado en crema de rocoto suave, aceite de huacatay y sal de Maras rosada. Delicadeza en estado puro.</p>
-      <div class="dish-footer"><span class="dish-badge">Tradicional</span></div>
-    </div>
+    <div class="dish"><div class="dish-name">Ceviche <em>Carretillero</em></div><p class="dish-desc">Corvina de primera selección marinada en leche de tigre con ají limo fresco, cebolla morada en juliana y choclo cancha tostado. Cítrico, vibrante, profundo.</p><div class="dish-footer"><span class="dish-badge">Firma del Chef</span></div></div>
+    <div class="dish"><div class="dish-name">Ceviche <em>Nikkei</em></div><p class="dish-desc">Fusión íntima entre el Pacífico y el Japón. Salmón premium, ponzu de maracuyá, emulsión de aguacate cremoso y crujiente de wonton negro.</p><div class="dish-footer"><span class="dish-badge">Fusión</span></div></div>
+    <div class="dish"><div class="dish-name"><em>Causa</em> Limeña Premium</div><p class="dish-desc">Causa de papa amarilla infusionada con ají amarillo, coronada con láminas de langostino al ajillo, mayonesa de aceituna negra y caviar de trucha andina.</p><div class="dish-footer"><span class="dish-badge">Alta Cocina</span></div></div>
+    <div class="dish"><div class="dish-name">Tiradito <em>Criollo</em></div><p class="dish-desc">Corte en láminas delicadas de lenguado salvaje, bañado en crema de rocoto suave, aceite de huacatay y sal de Maras rosada. Delicadeza en estado puro.</p><div class="dish-footer"><span class="dish-badge">Tradicional</span></div></div>
   </div>
-
   <div id="tab-fondos" class="menu-panel">
-    <div class="dish">
-      <div class="dish-name">Lomo Saltado <em>Gourmet</em></div>
-      <p class="dish-desc">Lomo fino de res en corte Wagyu-style, flameado al wok con sillao artesanal, tomate asado, cebolla caramelizada y papas nativas fritas. El clásico perfecto en su versión más exigente.</p>
-      <div class="dish-footer"><span class="dish-badge">Ícono</span></div>
-    </div>
-    <div class="dish">
-      <div class="dish-name">Arroz con Mariscos <em>al Wok</em></div>
-      <p class="dish-desc">Arroz cremoso cocinado en fondo de mariscos reducido, con pulpo tierno, langostinos jumbo, calamares y almejas, terminado con aceite de ají amarillo y cilantro fresco.</p>
-      <div class="dish-footer"><span class="dish-badge">Mar & Tierra</span></div>
-    </div>
-    <div class="dish">
-      <div class="dish-name"><em>Pulpo</em> a la Parrilla</div>
-      <p class="dish-desc">Tentáculo de pulpo gallego cocinado sous-vide, marcado a la brasa con carbón de quebracho, sobre crema de papas a la huancaína y vinagreta de maíz morado con chicha.</p>
-      <div class="dish-footer"><span class="dish-badge">Estrella</span></div>
-    </div>
-    <div class="dish">
-      <div class="dish-name">Ají de Gallina <em>Contemporáneo</em></div>
-      <p class="dish-desc">Gallina de campo desmenuzada en salsa de ají amarillo con nueces, pan brioche y queso fresco. Montado con huevo de codorniz confitado y reducción de caldo de gallina.</p>
-      <div class="dish-footer"><span class="dish-badge">Reinterpretación</span></div>
-    </div>
+    <div class="dish"><div class="dish-name">Lomo Saltado <em>Gourmet</em></div><p class="dish-desc">Lomo fino de res en corte Wagyu-style, flameado al wok con sillao artesanal, tomate asado, cebolla caramelizada y papas nativas fritas. El clásico perfecto en su versión más exigente.</p><div class="dish-footer"><span class="dish-badge">Ícono</span></div></div>
+    <div class="dish"><div class="dish-name">Arroz con Mariscos <em>al Wok</em></div><p class="dish-desc">Arroz cremoso cocinado en fondo de mariscos reducido, con pulpo tierno, langostinos jumbo, calamares y almejas, terminado con aceite de ají amarillo y cilantro fresco.</p><div class="dish-footer"><span class="dish-badge">Mar & Tierra</span></div></div>
+    <div class="dish"><div class="dish-name"><em>Pulpo</em> a la Parrilla</div><p class="dish-desc">Tentáculo de pulpo gallego cocinado sous-vide, marcado a la brasa con carbón de quebracho, sobre crema de papas a la huancaína y vinagreta de maíz morado con chicha.</p><div class="dish-footer"><span class="dish-badge">Estrella</span></div></div>
+    <div class="dish"><div class="dish-name">Ají de Gallina <em>Contemporáneo</em></div><p class="dish-desc">Gallina de campo desmenuzada en salsa de ají amarillo con nueces, pan brioche y queso fresco. Montado con huevo de codorniz confitado y reducción de caldo de gallina.</p><div class="dish-footer"><span class="dish-badge">Reinterpretación</span></div></div>
   </div>
-
   <div id="tab-cocteleria" class="menu-panel">
-    <div class="dish">
-      <div class="dish-name">Pisco Sour <em>Catedral</em></div>
-      <p class="dish-desc">La versión canónica elevada. Pisco quebranta selección especial, limón de Pica, almíbar artesanal, clara de huevo en espuma densa y bitters amargos de Angostura en arabesco dorado.</p>
-      <div class="dish-footer"><span class="dish-badge">Clásico Absoluto</span></div>
-    </div>
-    <div class="dish">
-      <div class="dish-name">Lima <em>Obscura</em></div>
-      <p class="dish-desc">Pisco Italia envejecido, maracuyá en reducción densa, vermut oscuro chileno y espuma de ají limo. Un cóctel que seduce desde el primer aroma hasta el final especiado.</p>
-      <div class="dish-footer"><span class="dish-badge">Firma Pisco Lima</span></div>
-    </div>
-    <div class="dish">
-      <div class="dish-name"><em>Chilcano</em> de Autor</div>
-      <p class="dish-desc">Pisco acholado, jengibre fresco prensado, ginger beer artesanal con burbujas finas, bitters de lima y una rodaja de pepino encurtido. Largo, fresco e inesperadamente complejo.</p>
-      <div class="dish-footer"><span class="dish-badge">Aperitivo</span></div>
-    </div>
-    <div class="dish">
-      <div class="dish-name">Vendimia <em>Andina</em></div>
-      <p class="dish-desc">Pisco mosto verde de uva negra criolla, reducción de mora andina, agua tónica floral y espuma de lavanda. Una copa que evoca la temporada de vendimia en el Valle del Elqui.</p>
-      <div class="dish-footer"><span class="dish-badge">Temporada</span></div>
-    </div>
+    <div class="dish"><div class="dish-name">Pisco Sour <em>Catedral</em></div><p class="dish-desc">La versión canónica elevada. Pisco quebranta selección especial, limón de Pica, almíbar artesanal, clara de huevo en espuma densa y bitters amargos de Angostura en arabesco dorado.</p><div class="dish-footer"><span class="dish-badge">Clásico Absoluto</span></div></div>
+    <div class="dish"><div class="dish-name">Lima <em>Obscura</em></div><p class="dish-desc">Pisco Italia envejecido, maracuyá en reducción densa, vermut oscuro chileno y espuma de ají limo. Un cóctel que seduce desde el primer aroma hasta el final especiado.</p><div class="dish-footer"><span class="dish-badge">Firma Pisco Lima</span></div></div>
+    <div class="dish"><div class="dish-name"><em>Chilcano</em> de Autor</div><p class="dish-desc">Pisco acholado, jengibre fresco prensado, ginger beer artesanal con burbujas finas, bitters de lima y una rodaja de pepino encurtido. Largo, fresco e inesperadamente complejo.</p><div class="dish-footer"><span class="dish-badge">Aperitivo</span></div></div>
+    <div class="dish"><div class="dish-name">Vendimia <em>Andina</em></div><p class="dish-desc">Pisco mosto verde de uva negra criolla, reducción de mora andina, agua tónica floral y espuma de lavanda. Una copa que evoca la temporada de vendimia en el Valle del Elqui.</p><div class="dish-footer"><span class="dish-badge">Temporada</span></div></div>
   </div>
 </section>
 
-<!-- ═══════════════════ CONVERSIÓN / RESERVAS ═══════════════════ -->
+<!-- RESERVAS -->
 <section id="reservas">
   <p class="sec-label">— Vivir la Experiencia</p>
   <h2 class="sec-title">¿Cómo quieres <em>disfrutarnos</em> hoy?</h2>
   <div class="conv-grid">
     <div class="conv-block">
-      <div class="conv-icon">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-      </div>
+      <div class="conv-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></div>
       <div class="conv-title"><em>Experiencia</em><br>en Salón</div>
       <p class="conv-body">Reserva tu mesa y permítete una noche que <strong>trasciende la cena</strong>. Ambiente diseñado, servicio de guante blanco, maridaje con coctelería de autor y una propuesta gastronómica que no encontrarás en ningún otro lugar de Las Rastras.<br><br><strong>Disponibilidad limitada.</strong> Reservas para grupos privados, celebraciones y experiencias maridaje disponibles a consulta.</p>
-      <a class="btn-wa-outline" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20Pisco%20Lima!%20%F0%9F%8C%BF%0A%0AMe%20gustar%C3%ADa%20reservar%20una%20mesa%20en%20el%20restaurante.%20Les%20comparto%20mis%20datos%3A%0A%0A%E2%80%A2%20Nombre%3A%20%0A%E2%80%A2%20Fecha%20deseada%3A%20%0A%E2%80%A2%20Hora%20preferida%3A%20%0A%E2%80%A2%20N%C3%BAmero%20de%20personas%3A%20%0A%E2%80%A2%20Ocasi%C3%B3n%20especial%20(opcional)%3A%20%0A%0AQuedo%20atento%2Fa%20a%20su%20confirmaci%C3%B3n.%20%C2%A1Muchas%20gracias!" target="_blank">
+      <a class="btn-wa-outline" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20Pisco%20Lima!%20%F0%9F%8C%BF%0A%0AMe%20gustar%C3%ADa%20reservar%20una%20mesa.%0A%0A%E2%80%A2%20Nombre%3A%20%0A%E2%80%A2%20Fecha%3A%20%0A%E2%80%A2%20Hora%3A%20%0A%E2%80%A2%20Personas%3A%20%0A%E2%80%A2%20Ocasi%C3%B3n%3A%20" target="_blank">
         <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Solicitar Reserva por WhatsApp
       </a>
     </div>
-
     <div class="conv-block">
-      <div class="conv-icon">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-      </div>
+      <div class="conv-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
       <div class="conv-title"><em>Pisco Lima</em><br>en Casa</div>
-      <p class="conv-body">Porque la alta cocina no debería tener dirección fija. Nuestro servicio de delivery premium lleva <strong>los mismos platos de carta</strong>, envasados con el mismo cuidado con que los emplatamos en salón.<br><br><strong>Horario delivery:</strong> Martes a Domingo, 13:00 – 22:00 hrs. Para pedidos especiales o eventos en casa, consúltanos.</p>
-      <a class="btn-wa-outline" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20Pisco%20Lima!%20%F0%9F%8D%8B%0A%0AQuiero%20armar%20mi%20pedido%20para%20delivery.%20Aqu%C3%AD%20mis%20datos%3A%0A%0A%E2%80%A2%20Nombre%3A%20%0A%E2%80%A2%20Direcci%C3%B3n%20de%20entrega%3A%20%0A%E2%80%A2%20Hora%20estimada%20que%20necesito%20el%20pedido%3A%20%0A%E2%80%A2%20Mi%20pedido%20(platos%20y%20cantidad)%3A%20%0A%0AAguardo%20sus%20indicaciones%20para%20coordinar.%20%C2%A1Gracias!" target="_blank">
+      <p class="conv-body">Porque la alta cocina no debería tener dirección fija. Nuestro servicio de delivery premium lleva <strong>los mismos platos de carta</strong>, envasados con el mismo cuidado con que los emplatamos en salón.<br><br><strong>Horario delivery:</strong> Martes a Domingo, 13:00 – 22:00 hrs.</p>
+      <a class="btn-wa-outline" href="https://wa.me/56912345678?text=%C2%A1Hola%2C%20Pisco%20Lima!%20%F0%9F%8D%8B%0A%0AQuiero%20pedir%20delivery.%0A%0A%E2%80%A2%20Nombre%3A%20%0A%E2%80%A2%20Direcci%C3%B3n%3A%20%0A%E2%80%A2%20Hora%3A%20%0A%E2%80%A2%20Pedido%3A%20" target="_blank">
         <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Pedir Delivery por WhatsApp
       </a>
@@ -872,34 +608,27 @@
   </div>
 </section>
 
-<!-- ═══════════════════ CONTACTO & MAPA ═══════════════════ -->
+<!-- CONTACTO -->
 <section id="contacto">
   <p class="sec-label">— Encuéntranos</p>
   <h2 class="sec-title">Estamos en <em>Talca</em>,<br>esperándote.</h2>
   <div class="contact-grid">
-
-    <!-- Info columna izquierda -->
     <div class="contact-info">
-
       <div class="contact-item">
         <span class="contact-item-label">Dirección</span>
         <div class="contact-item-value">
           <a href="https://maps.google.com/?q=Av.+San+Miguel+3830,+Talca,+Chile" target="_blank">
-            Av. San Miguel 3830<br>
-            <strong>Las Rastras, Talca</strong><br>
-            Región del Maule, Chile
+            Av. San Miguel 3830<br><strong>Las Rastras, Talca</strong><br>Región del Maule, Chile
           </a>
         </div>
       </div>
-
       <div class="contact-item">
         <span class="contact-item-label">Reservas & Delivery</span>
         <div class="contact-item-value">
           <a href="https://wa.me/56912345678">+56 9 1234 5678</a><br>
-          <span style="font-size:11px; color: var(--faint);">WhatsApp · respuesta en 10–15 min</span>
+          <span style="font-size:11px;color:var(--faint)">WhatsApp · respuesta en 10–15 min</span>
         </div>
       </div>
-
       <div class="contact-item">
         <span class="contact-item-label">Horario de atención</span>
         <div class="contact-hours">
@@ -909,111 +638,58 @@
           <div class="contact-hours-row"><span style="color:var(--faint)">Lunes</span><span style="color:var(--faint)">Cerrado</span></div>
         </div>
       </div>
-
       <div class="contact-item">
         <span class="contact-item-label">Síguenos</span>
         <div class="contact-social">
           <a class="social-link" href="https://instagram.com/piscolima.lasrastras" target="_blank">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
             @piscolima.lasrastras
           </a>
         </div>
       </div>
-
-      <a class="btn-gold" href="https://maps.google.com/?q=Av.+San+Miguel+3830,+Talca,+Chile" target="_blank" style="text-align:center; justify-content:center; margin-top: auto;">
+      <a class="btn-gold" href="https://maps.google.com/?q=Av.+San+Miguel+3830,+Talca,+Chile" target="_blank" style="justify-content:center;margin-top:auto;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
         Cómo llegar en Google Maps
       </a>
-
     </div>
-
-    <!-- Mapa columna derecha -->
     <div class="contact-map-wrap">
-      <!-- Mapa SVG estilizado + CTA a Google Maps — no requiere API ni iframe -->
       <div class="map-visual">
-
-        <!-- Fondo cuadrícula de calles -->
         <svg class="map-bg-svg" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-          <!-- Fondo -->
           <rect width="600" height="420" fill="#0f0e0c"/>
-          <!-- Cuadrícula manzanas -->
           <g stroke="#1e1c18" stroke-width="0.5" fill="none">
-            <!-- Verticales -->
-            <line x1="60"  y1="0" x2="60"  y2="420"/>
-            <line x1="140" y1="0" x2="140" y2="420"/>
-            <line x1="220" y1="0" x2="220" y2="420"/>
-            <line x1="300" y1="0" x2="300" y2="420"/>
-            <line x1="380" y1="0" x2="380" y2="420"/>
-            <line x1="460" y1="0" x2="460" y2="420"/>
-            <line x1="540" y1="0" x2="540" y2="420"/>
-            <!-- Horizontales -->
-            <line x1="0" y1="60"  x2="600" y2="60"/>
-            <line x1="0" y1="140" x2="600" y2="140"/>
-            <line x1="0" y1="210" x2="600" y2="210"/>
-            <line x1="0" y1="280" x2="600" y2="280"/>
-            <line x1="0" y1="350" x2="600" y2="350"/>
+            <line x1="60" y1="0" x2="60" y2="420"/><line x1="140" y1="0" x2="140" y2="420"/><line x1="220" y1="0" x2="220" y2="420"/><line x1="300" y1="0" x2="300" y2="420"/><line x1="380" y1="0" x2="380" y2="420"/><line x1="460" y1="0" x2="460" y2="420"/><line x1="540" y1="0" x2="540" y2="420"/>
+            <line x1="0" y1="60" x2="600" y2="60"/><line x1="0" y1="140" x2="600" y2="140"/><line x1="0" y1="210" x2="600" y2="210"/><line x1="0" y1="280" x2="600" y2="280"/><line x1="0" y1="350" x2="600" y2="350"/>
           </g>
-          <!-- Manzanas rellenas sutiles -->
           <g fill="#141210">
-            <rect x="61"  y="61"  width="78" height="78"/>
-            <rect x="141" y="61"  width="78" height="78"/>
-            <rect x="301" y="61"  width="78" height="78"/>
-            <rect x="381" y="61"  width="78" height="78"/>
-            <rect x="461" y="61"  width="78" height="78"/>
-            <rect x="61"  y="141" width="78" height="68"/>
-            <rect x="221" y="141" width="78" height="68"/>
-            <rect x="381" y="141" width="78" height="68"/>
-            <rect x="461" y="141" width="78" height="68"/>
-            <rect x="61"  y="211" width="78" height="68"/>
-            <rect x="141" y="211" width="78" height="68"/>
-            <rect x="301" y="211" width="78" height="68"/>
-            <rect x="461" y="211" width="78" height="68"/>
-            <rect x="61"  y="281" width="78" height="68"/>
-            <rect x="221" y="281" width="78" height="68"/>
-            <rect x="381" y="281" width="78" height="68"/>
-            <rect x="461" y="281" width="78" height="68"/>
+            <rect x="61" y="61" width="78" height="78"/><rect x="141" y="61" width="78" height="78"/><rect x="301" y="61" width="78" height="78"/><rect x="381" y="61" width="78" height="78"/><rect x="461" y="61" width="78" height="78"/>
+            <rect x="61" y="141" width="78" height="68"/><rect x="221" y="141" width="78" height="68"/><rect x="381" y="141" width="78" height="68"/><rect x="461" y="141" width="78" height="68"/>
+            <rect x="61" y="211" width="78" height="68"/><rect x="141" y="211" width="78" height="68"/><rect x="301" y="211" width="78" height="68"/><rect x="461" y="211" width="78" height="68"/>
+            <rect x="61" y="281" width="78" height="68"/><rect x="221" y="281" width="78" height="68"/><rect x="381" y="281" width="78" height="68"/><rect x="461" y="281" width="78" height="68"/>
           </g>
-          <!-- Av. San Miguel — calle destacada (vertical central) -->
           <rect x="295" y="0" width="10" height="420" fill="#2a2520"/>
-          <!-- Calle transversal destacada -->
           <rect x="0" y="205" width="600" height="10" fill="#222018"/>
-          <!-- Labels calles -->
-          <text x="300" y="18" text-anchor="middle" fill="#3a3020" font-size="9" font-family="Montserrat,sans-serif" letter-spacing="1">AV. SAN MIGUEL</text>
-          <text x="300" y="415" text-anchor="middle" fill="#3a3020" font-size="9" font-family="Montserrat,sans-serif" letter-spacing="1">AV. SAN MIGUEL</text>
-          <!-- Halo dorado del pin -->
+          <text x="308" y="18" fill="#3a3020" font-size="9" font-family="Montserrat,sans-serif" letter-spacing="1">AV. SAN MIGUEL</text>
           <circle cx="300" cy="210" r="40" fill="rgba(201,169,110,0.06)"/>
           <circle cx="300" cy="210" r="24" fill="rgba(201,169,110,0.10)"/>
-          <!-- Pin -->
           <circle cx="300" cy="204" r="10" fill="#c9a96e"/>
-          <circle cx="300" cy="204" r="5"  fill="#0d0d0d"/>
+          <circle cx="300" cy="204" r="5" fill="#0d0d0d"/>
           <path d="M300 214 L294 224 Q300 230 306 224 Z" fill="#c9a96e"/>
-          <!-- Número dirección -->
           <text x="318" y="200" fill="#c9a96e" font-size="11" font-family="Montserrat,sans-serif" font-weight="500">3830</text>
         </svg>
-
-        <!-- Badge inferior sobre el mapa -->
         <div class="map-overlay-badge">
           <div class="map-overlay-badge-dot"></div>
           <span class="map-overlay-badge-text">Pisco Lima · Av. San Miguel 3830, Talca</span>
         </div>
-
-        <!-- Botón central "Abrir en Google Maps" -->
-        <a class="map-open-btn"
-           href="https://www.google.com/maps/search/?api=1&query=Av.+San+Miguel+3830,+Talca,+Chile"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="Abrir en Google Maps">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <a class="map-open-btn" href="https://www.google.com/maps/search/?api=1&query=Av.+San+Miguel+3830,+Talca,+Chile" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           Abrir en Google Maps
         </a>
-
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<!-- FOOTER -->
 <footer>
   <div class="footer-logo">PISCO LIMA — Las Rastras</div>
   <div class="footer-loc">Av. San Miguel 3830 · Las Rastras, Talca · Maule</div>
@@ -1021,24 +697,22 @@
 </footer>
 
 <script>
-  function showTab(name, el) {
-    document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
-    el.classList.add('active');
-  }
-
-  function closeBubble() {
-    document.getElementById('wa-bubble-msg').classList.remove('visible');
-  }
-
-  setTimeout(() => {
-    document.getElementById('wa-bubble-msg').classList.add('visible');
-  }, 5000);
-
-  setTimeout(() => {
-    document.getElementById('wa-bubble-msg').classList.remove('visible');
-  }, 13000);
+function showTab(name, el) {
+  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  el.classList.add('active');
+}
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+});
+setTimeout(() => {
+  document.getElementById('wa-bubble-msg').classList.add('visible');
+}, 5000);
+setTimeout(() => {
+  document.getElementById('wa-bubble-msg').classList.remove('visible');
+}, 13000);
 </script>
 </body>
 </html>
